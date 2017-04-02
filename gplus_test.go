@@ -36,16 +36,17 @@ var gplusAPI = []route{
 }
 
 var (
-	gplusAce         http.Handler
-	gplusBear        http.Handler
-	gplusBeego       http.Handler
-	gplusBone        http.Handler
-	gplusDenco       http.Handler
-	gplusEcho        http.Handler
-	gplusGin         http.Handler
-	gplusGocraftWeb  http.Handler
-	gplusGoji        http.Handler
-	gplusGojiv2      http.Handler
+	gplusNoypi http.Handler
+	gplusAce   http.Handler
+	gplusBear  http.Handler
+	gplusBeego http.Handler
+	gplusBone  http.Handler
+	gplusDenco http.Handler
+	//gplusEcho        http.Handler
+	gplusGin        http.Handler
+	gplusGocraftWeb http.Handler
+	//gplusGoji        http.Handler
+	//gplusGojiv2      http.Handler
 	gplusGoJsonRest  http.Handler
 	gplusGoRestful   http.Handler
 	gplusGorillaMux  http.Handler
@@ -59,17 +60,20 @@ var (
 	gplusPossum      http.Handler
 	gplusR2router    http.Handler
 	gplusRevel       http.Handler
-	gplusRivet       http.Handler
-	gplusTango       http.Handler
-	gplusTigerTonic  http.Handler
-	gplusTraffic     http.Handler
-	gplusVulcan      http.Handler
+	//gplusRivet       http.Handler
+	//gplusTango      http.Handler
+	gplusTigerTonic http.Handler
+	gplusTraffic    http.Handler
+	gplusVulcan     http.Handler
 	// gplusZeus        http.Handler
 )
 
 func init() {
 	println("#GPlusAPI Routes:", len(gplusAPI))
 
+	calcMem("Noypi", func() {
+		gplusNoypi = loadNoypi(gplusAPI)
+	})
 	calcMem("Ace", func() {
 		gplusAce = loadAce(gplusAPI)
 	})
@@ -85,21 +89,21 @@ func init() {
 	calcMem("Denco", func() {
 		gplusDenco = loadDenco(gplusAPI)
 	})
-	calcMem("Echo", func() {
+	/*calcMem("Echo", func() {
 		gplusEcho = loadEcho(gplusAPI)
-	})
+	})*/
 	calcMem("Gin", func() {
 		gplusGin = loadGin(gplusAPI)
 	})
 	calcMem("GocraftWeb", func() {
 		gplusGocraftWeb = loadGocraftWeb(gplusAPI)
 	})
-	calcMem("Goji", func() {
+	/*calcMem("Goji", func() {
 		gplusGoji = loadGoji(gplusAPI)
-	})
-	calcMem("Gojiv2", func() {
+	})*/
+	/*calcMem("Gojiv2", func() {
 		gplusGojiv2 = loadGojiv2(gplusAPI)
-	})
+	})*/
 	calcMem("GoJsonRest", func() {
 		gplusGoJsonRest = loadGoJsonRest(gplusAPI)
 	})
@@ -138,13 +142,13 @@ func init() {
 	})
 	calcMem("Revel", func() {
 		gplusRevel = loadRevel(gplusAPI)
-	})
-	calcMem("Rivet", func() {
-		gplusRivet = loadRivet(gplusAPI)
-	})
-	calcMem("Tango", func() {
+	}) /*
+		calcMem("Rivet", func() {
+			gplusRivet = loadRivet(gplusAPI)
+		})*/
+	/*calcMem("Tango", func() {
 		gplusTango = loadTango(gplusAPI)
-	})
+	})*/
 	calcMem("TigerTonic", func() {
 		gplusTigerTonic = loadTigerTonic(gplusAPI)
 	})
@@ -162,6 +166,10 @@ func init() {
 }
 
 // Static
+func BenchmarkNoypi_GPlusStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people", nil)
+	benchRequest(b, gplusNoypi, req)
+}
 func BenchmarkAce_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusAce, req)
@@ -182,10 +190,11 @@ func BenchmarkDenco_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusDenco, req)
 }
-func BenchmarkEcho_GPlusStatic(b *testing.B) {
+
+/*func BenchmarkEcho_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusEcho, req)
-}
+}*/
 func BenchmarkGin_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusGin, req)
@@ -193,7 +202,7 @@ func BenchmarkGin_GPlusStatic(b *testing.B) {
 func BenchmarkGocraftWeb_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusGocraftWeb, req)
-}
+} /*
 func BenchmarkGoji_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusGoji, req)
@@ -201,7 +210,7 @@ func BenchmarkGoji_GPlusStatic(b *testing.B) {
 func BenchmarkGojiv2_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusGojiv2, req)
-}
+}*/
 func BenchmarkGoJsonRest_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusGoJsonRest, req)
@@ -253,15 +262,15 @@ func BenchmarkR2router_GPlusStatic(b *testing.B) {
 func BenchmarkRevel_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusRevel, req)
-}
+} /*
 func BenchmarkRivet_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusRivet, req)
-}
-func BenchmarkTango_GPlusStatic(b *testing.B) {
+}*/
+/*func BenchmarkTango_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusTango, req)
-}
+}*/
 func BenchmarkTigerTonic_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusTigerTonic, req)
@@ -281,6 +290,10 @@ func BenchmarkVulcan_GPlusStatic(b *testing.B) {
 // }
 
 // One Param
+func BenchmarkNoypi_GPlusParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
+	benchRequest(b, gplusNoypi, req)
+}
 func BenchmarkAce_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusAce, req)
@@ -301,10 +314,11 @@ func BenchmarkDenco_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusDenco, req)
 }
-func BenchmarkEcho_GPlusParam(b *testing.B) {
+
+/*func BenchmarkEcho_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusEcho, req)
-}
+}*/
 func BenchmarkGin_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusGin, req)
@@ -312,7 +326,7 @@ func BenchmarkGin_GPlusParam(b *testing.B) {
 func BenchmarkGocraftWeb_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusGocraftWeb, req)
-}
+} /*
 func BenchmarkGoji_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusGoji, req)
@@ -320,7 +334,7 @@ func BenchmarkGoji_GPlusParam(b *testing.B) {
 func BenchmarkGojiv2_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusGojiv2, req)
-}
+}*/
 func BenchmarkGoJsonRest_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusGoJsonRest, req)
@@ -372,15 +386,15 @@ func BenchmarkR2router_GPlusParam(b *testing.B) {
 func BenchmarkRevel_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusRevel, req)
-}
+} /*
 func BenchmarkRivet_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusRivet, req)
-}
-func BenchmarkTango_GPlusParam(b *testing.B) {
+}*/
+/*func BenchmarkTango_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusTango, req)
-}
+}*/
 func BenchmarkTigerTonic_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusTigerTonic, req)
@@ -400,6 +414,10 @@ func BenchmarkVulcan_GPlusParam(b *testing.B) {
 // }
 
 // Two Params
+func BenchmarkNoypi_GPlus2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
+	benchRequest(b, gplusNoypi, req)
+}
 func BenchmarkAce_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusAce, req)
@@ -420,10 +438,11 @@ func BenchmarkDenco_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusDenco, req)
 }
-func BenchmarkEcho_GPlus2Params(b *testing.B) {
+
+/*func BenchmarkEcho_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusEcho, req)
-}
+}*/
 func BenchmarkGin_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusGin, req)
@@ -431,7 +450,7 @@ func BenchmarkGin_GPlus2Params(b *testing.B) {
 func BenchmarkGocraftWeb_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusGocraftWeb, req)
-}
+} /*
 func BenchmarkGoji_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusGoji, req)
@@ -439,7 +458,7 @@ func BenchmarkGoji_GPlus2Params(b *testing.B) {
 func BenchmarkGojiv2_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusGojiv2, req)
-}
+}*/
 func BenchmarkGoJsonRest_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusGoJsonRest, req)
@@ -491,15 +510,15 @@ func BenchmarkR2router_GPlus2Params(b *testing.B) {
 func BenchmarkRevel_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusRevel, req)
-}
+} /*
 func BenchmarkRivet_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusRivet, req)
-}
-func BenchmarkTango_GPlus2Params(b *testing.B) {
+}*/
+/*func BenchmarkTango_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusTango, req)
-}
+}*/
 func BenchmarkTigerTonic_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusTigerTonic, req)
@@ -519,6 +538,9 @@ func BenchmarkVulcan_GPlus2Params(b *testing.B) {
 // }
 
 // All Routes
+func BenchmarkNoypi_GPlusAll(b *testing.B) {
+	benchRoutes(b, gplusNoypi, gplusAPI)
+}
 func BenchmarkAce_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusAce, gplusAPI)
 }
@@ -530,25 +552,26 @@ func BenchmarkBeego_GPlusAll(b *testing.B) {
 }
 func BenchmarkBone_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusBone, gplusAPI)
-}
+} /*
 func BenchmarkDenco_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusDenco, gplusAPI)
 }
-func BenchmarkEcho_GPlusAll(b *testing.B) {
+*/
+/*func BenchmarkEcho_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusEcho, gplusAPI)
-}
+}*/
 func BenchmarkGin_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusGin, gplusAPI)
 }
 func BenchmarkGocraftWeb_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusGocraftWeb, gplusAPI)
-}
+} /*
 func BenchmarkGoji_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusGoji, gplusAPI)
 }
 func BenchmarkGojiv2_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusGojiv2, gplusAPI)
-}
+}*/
 func BenchmarkGoJsonRest_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusGoJsonRest, gplusAPI)
 }
@@ -561,12 +584,13 @@ func BenchmarkGorillaMux_GPlusAll(b *testing.B) {
 func BenchmarkHttpRouter_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusHttpRouter, gplusAPI)
 }
-func BenchmarkHttpTreeMux_GPlusAll(b *testing.B) {
+
+/*func BenchmarkHttpTreeMux_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusHttpTreeMux, gplusAPI)
-}
+}*/ /*
 func BenchmarkKocha_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusKocha, gplusAPI)
-}
+}*/
 func BenchmarkLARS_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusLARS, gplusAPI)
 }
@@ -587,13 +611,13 @@ func BenchmarkR2router_GPlusAll(b *testing.B) {
 }
 func BenchmarkRevel_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusRevel, gplusAPI)
-}
+} /*
 func BenchmarkRivet_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusRivet, gplusAPI)
-}
-func BenchmarkTango_GPlusAll(b *testing.B) {
+}*/
+/*func BenchmarkTango_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusTango, gplusAPI)
-}
+}*/
 func BenchmarkTigerTonic_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusTigerTonic, gplusAPI)
 }

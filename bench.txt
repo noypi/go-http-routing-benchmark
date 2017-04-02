@@ -1,0 +1,26 @@
+BenchmarkNoypi_GithubParam       	 2000000	       774 ns/op	      32 B/op	       1 allocs/op
+BenchmarkAce_GithubParam         	 1000000	      1646 ns/op	      96 B/op	       1 allocs/op
+BenchmarkBear_GithubParam        	  500000	      4906 ns/op	     496 B/op	       5 allocs/op
+BenchmarkBeego_GithubParam       	  500000	      3291 ns/op	     368 B/op	       4 allocs/op
+BenchmarkBone_GithubParam        	  100000	     20345 ns/op	    1760 B/op	      18 allocs/op
+BenchmarkDenco_GithubParam       	 1000000	      1003 ns/op	     128 B/op	       1 allocs/op
+BenchmarkGin_GithubParam         	 3000000	       754 ns/op	       0 B/op	       0 allocs/op
+BenchmarkGocraftWeb_GithubParam  	  300000	      6218 ns/op	     712 B/op	       9 allocs/op
+BenchmarkGoJsonRest_GithubParam  	  500000	      7723 ns/op	     713 B/op	      14 allocs/op
+BenchmarkGoRestful_GithubParam   	   20000	     58844 ns/op	    2360 B/op	      21 allocs/op
+BenchmarkGorillaMux_GithubParam  	   50000	     26666 ns/op	    1088 B/op	      11 allocs/op
+BenchmarkHttpRouter_GithubParam  	 2000000	       809 ns/op	      96 B/op	       1 allocs/op
+BenchmarkHttpTreeMux_GithubParam 	  500000	      3684 ns/op	     384 B/op	       4 allocs/op
+BenchmarkKocha_GithubParam       	 1000000	      2233 ns/op	     128 B/op	       5 allocs/op
+BenchmarkLARS_GithubParam        	 3000000	       711 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMacaron_GithubParam     	  200000	      9391 ns/op	    1040 B/op	       9 allocs/op
+BenchmarkMartini_GithubParam     	   50000	     43258 ns/op	    1152 B/op	      11 allocs/op
+BenchmarkPat_GithubParam         	  100000	     21025 ns/op	    2464 B/op	      48 allocs/op
+BenchmarkPossum_GithubParam      	 1000000	      3304 ns/op	     560 B/op	       6 allocs/op
+BenchmarkR2router_GithubParam    	 1000000	      2581 ns/op	     432 B/op	       5 allocs/op
+BenchmarkRevel_GithubParam       	  100000	     25806 ns/op	    1904 B/op	      33 allocs/op
+BenchmarkTigerTonic_GithubParam  	  100000	     13644 ns/op	    1440 B/op	      24 allocs/op
+BenchmarkTraffic_GithubParam     	   50000	     40143 ns/op	    5992 B/op	      52 allocs/op
+BenchmarkVulcan_GithubParam      	  500000	      3701 ns/op	      98 B/op	       3 allocs/op
+PASS
+ok  	github.com/noypi/go-http-routing-benchmark	65.535s

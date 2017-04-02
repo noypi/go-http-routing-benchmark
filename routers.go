@@ -32,9 +32,9 @@ import (
 	"github.com/gocraft/web"
 	"github.com/gorilla/mux"
 	"github.com/julienschmidt/httprouter"
-	"github.com/labstack/echo"
-	llog "github.com/lunny/log"
-	"github.com/lunny/tango"
+	//	"github.com/labstack/echo"
+	//llog "github.com/lunny/log"
+	//"github.com/lunny/tango"
 	vulcan "github.com/mailgun/route"
 	"github.com/mikespook/possum"
 	possumrouter "github.com/mikespook/possum/router"
@@ -42,18 +42,19 @@ import (
 	"github.com/naoina/denco"
 	"github.com/naoina/kocha-urlrouter"
 	_ "github.com/naoina/kocha-urlrouter/doublearray"
+	noypi "github.com/noypi/router"
 	"github.com/pilu/traffic"
 	"github.com/plimble/ace"
 	"github.com/rcrowley/go-tigertonic"
 	"github.com/revel/revel"
 	"github.com/robfig/pathtree"
-	"github.com/typepress/rivet"
+	//"github.com/typepress/rivet"
 	"github.com/ursiform/bear"
 	"github.com/vanng822/r2router"
-	goji "github.com/zenazn/goji/web"
-	gojiv2 "goji.io"
-	gojiv2pat "goji.io/pat"
-	gcontext "golang.org/x/net/context"
+	//goji "github.com/zenazn/goji/web"
+	//	gojiv2 "goji.io"
+	//gojiv2pat "goji.io/pat"
+	//gcontext "golang.org/x/net/context"
 )
 
 type route struct {
@@ -95,7 +96,7 @@ func init() {
 	initGin()
 	initMartini()
 	initRevel()
-	initTango()
+	//initTango()
 	initTraffic()
 }
 
@@ -104,6 +105,50 @@ func httpHandlerFunc(w http.ResponseWriter, r *http.Request) {}
 
 func httpHandlerFuncTest(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, r.RequestURI)
+}
+
+// Noypi
+
+func noypiHandler(w http.ResponseWriter, r *http.Request) {}
+
+func noypiHandleWrite(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte(noypi.ParamByName(r, "name")))
+}
+
+func noypiHandleTest(w http.ResponseWriter, r *http.Request) {
+	io.WriteString(w, r.RequestURI)
+}
+
+func loadNoypi(routes []route) http.Handler {
+	h := http.HandlerFunc(noypiHandler)
+	if loadTestHandler {
+		h = http.HandlerFunc(noypiHandleTest)
+	}
+
+	router := noypi.New()
+	for _, route := range routes {
+		router.Handle(route.method, route.path, h)
+	}
+	return router
+}
+
+func loadNoypiStatic(routes []route) http.Handler {
+	h := http.HandlerFunc(noypiHandler)
+	if loadTestHandler {
+		h = http.HandlerFunc(noypiHandleTest)
+	}
+
+	router := noypi.New()
+	for _, route := range routes {
+		router.Handle(route.method, route.path, h)
+	}
+	return router
+}
+
+func loadNoypiSingle(method, path string, handle http.HandlerFunc) http.Handler {
+	router := noypi.New()
+	router.Handle(method, path, handle)
+	return router
 }
 
 // Ace
@@ -330,7 +375,7 @@ func loadDencoSingle(method, path string, h denco.HandlerFunc) http.Handler {
 }
 
 // Echo
-func echoHandler(c *echo.Context) error {
+/*func echoHandler(c *echo.Context) error {
 	return nil
 }
 
@@ -388,7 +433,7 @@ func loadEchoSingle(method, path string, h interface{}) http.Handler {
 	}
 	return e
 }
-
+*/
 // Gin
 func ginHandle(_ *gin.Context) {}
 
@@ -481,6 +526,7 @@ func loadGocraftWebSingle(method, path string, handler interface{}) http.Handler
 	return router
 }
 
+/*
 // goji
 func gojiFuncWrite(c goji.C, w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, c.URLParams["name"])
@@ -530,9 +576,9 @@ func loadGojiSingle(method, path string, handler interface{}) http.Handler {
 	}
 	return mux
 }
-
+*/
 // goji v2 (github.com/goji/goji)
-func gojiv2Handler(ctx gcontext.Context, w http.ResponseWriter, r *http.Request) {}
+/*func gojiv2Handler(ctx gcontext.Context, w http.ResponseWriter, r *http.Request) {}
 
 func gojiv2HandlerWrite(ctx gcontext.Context, w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, gojiv2pat.Param(ctx, "name"))
@@ -586,7 +632,7 @@ func loadGojiv2Single(method, path string, handler gojiv2.HandlerFunc) http.Hand
 	}
 	return mux
 }
-
+*/
 // go-json-rest/rest
 func goJsonRestHandler(w rest.ResponseWriter, req *rest.Request) {}
 
@@ -1252,6 +1298,7 @@ func loadRevelSingle(method, path, action string) http.Handler {
 	return rc
 }
 
+/*
 // Rivet
 func rivetHandler() {}
 
@@ -1282,8 +1329,8 @@ func loadRivetSingle(method, path string, handler interface{}) http.Handler {
 	router.Handle(method, path, handler)
 
 	return router
-}
-
+}*/
+/*
 // Tango
 func tangoHandler(ctx *tango.Context) {}
 
@@ -1318,7 +1365,7 @@ func loadTangoSingle(method, path string, handler func(*tango.Context)) http.Han
 	tg.Route(method, path, handler)
 	return tg
 }
-
+*/
 // Tiger Tonic
 func tigerTonicHandlerWrite(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, r.URL.Query().Get("name"))
